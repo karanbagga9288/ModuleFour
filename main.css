@@ -1,0 +1,84 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+  margin: 30px;
+  font-family: 'Creepster', sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#video{
+  border: 1px solid #999;
+  width: 98%;
+  max-width: 860px;
+}
+
+h1 {
+  font-family: 'Verdana', cursive;
+  color: rgb(107, 6, 94);
+  font-weight: absolute;
+  font-size: 80px;
+  margin: 10px;
+}
+
+
+button {  
+  display: block;
+  padding: 11px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.textEntry {
+  margin-top: 13px;
+  margin-bottom: 117px;
+}
+
+    label {
+      display: block;
+      margin-top: 0.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    #goalInput {
+      width: 30%;
+    }
+
+    li {
+      margin-top: 0.6rem;
+    }
+
+    #link {
+      margin-top: 0.4rem;
+      color: rgb(151, 13, 13);
+      background-color: rgb(110, 161, 161);
+      padding: 0.2rem 0.4rem;
+      cursor: pointer;
+    }
+
+    .deleteMe,
+    .deleteCompleted {
+      margin-left: 2rem;
+      color: rgb(197, 179, 16);
+      background-color: rgb(197, 152, 190);
+      padding: 0.2rem 0.4rem;
+      cursor: pointer;
+    }
+
+    .markAsCompleted {
+      margin-left: 0.4rem;
+      color: rgb(114, 21, 18);
+      background-color: rgb(137, 166, 173);
+      padding: 0.2rem 0.4rem;
+      cursor: pointer;
+    }
+
+    #Btn:hover,
+    .deleteMe:hover,
+    .markAsCompleted:hover {
+      opacity: 0.8;
+    }
+
+   
+ 

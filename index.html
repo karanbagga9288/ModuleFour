@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script>
+    window.fbAsyncInit = function(){
+      FB.init({
+        appId : "YourFacebookAppID",
+        cookie: true,
+        xfbml: true,
+        version: 'v3.2'
+      });
+    };
+      FB.getLoginStatus(function(response){
+        if(response.status === 'connected'){
+          getFbUserData();
+        }
+      });
+    
+
+    (function(d, s, id){
+      var js, fjs = d.getElementByTagName(s)[0];
+      if(d.getElementById(id))return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US.sdk.js";
+      fjs.parentMode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function fbLogin(){
+      FB.login(function(response){
+        if(response.authResponse){
+          getFbUserData();
+
+        }
+        else{
+          document.getElementId('status').innerHTML = 'user is not authorized';
+
+        }
+      },{scope: 'email'});
+      function getUserData(){
+        FB.api('\me', {locale: 'en-us', fields: 'id,first_name,last_name,email,link,gender,locale,pictures'},
+        function(response){
+          document.getElementById('fblink').setAttribute("onclick","fbLogout()");
+          document.getElementById('fbLink').innerHTML = 'Logout from Facebook';
+          document.getElementById('status').innerHTML = '<p>Thanks for logging in,' + response.first_name + '!</p>';
+          saveUserData(response); 
+        });
+        
+      }
+
+      function saveUserData(userData){
+        $.post('userData.php', {oauth_provider: 'facebook', userData: JSON.stingify(userData)}, function(){return true;})
+      }
+
+      function fbLogout(){
+        FB.logouT(function(){
+          document.getElementById('fblink').setAttribute("onclick","fbLogin()");
+          document.getElementById('fbLink').innerHTML = <img src="fblogin-btn.jpg"/>;
+          document.getElementById('userData').innerHTML = '';
+          document.getElementById('status').innerHTML = '<p>You have successfully logout from the facebook.</p>';
+        })
+      }
+    }
+  </script>
+<head>
+  <meta charset="UTF-8">
+  <title>My Goal Tracker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Bangers&display=swap" rel="stylesheet">
+  <link href="main.css" rel="stylesheet">
+  <script src="main-solution.js" async></script>
+</head>
+
+<body >
+  <h1 style = "text-align:center">KB's Goal Tracker</h1>
+  <br>
+  <form>
+    <label for="goalInput">Enter your goal here:</label>
+    <br>
+    <div class="center">
+    <input type="text" id="goalInput" >
+    <button id="link" >Save your goal</button>
+    </div>
+  </form>
+  <div>
+    <h2 id="goalH2"></h2>
+    <ol id="listGoals"></ol>
+  </div>
+  <div>
+    <h2 id="goalCompletedH2"></h2>
+    <ol id="listCompletedGoals"></ol>
+  </div>
+  <h3 style="text-align: center;">Goal Capture API</h3>
+  <button id="start">Start Capture</button>
+  <button id="stop">Stop Capture</button>
+  <video id="video" autoplay></video>
+
+  <script>
+    const videoElement = document.geElementId("video")
+    const start = document.getElementId("start")
+    const stop = document.getElementId("stop")
+
+    var displayMediaOptions = {
+      video: {
+        cursor:'always'
+      },
+      audio: true
+    }
+
+    start.addEventListener("click", function(e){
+      startCapture()
+    },false)
+
+    stop.addEventListener("click", function(e){
+      stopCapture()
+    },false)
+
+    async function startCapture(){
+      try{
+        videoElem.srcObject = await navigator.mediaDevices.getUserMedia(displayMediaOptions);
+        dumpOptionsInfo();
+      }
+      catch(err){
+        console.error("ErrorMessage:"+err);
+      }
+    }
+
+    function stopCapture(e){
+      let tracks = videoElement.srcObeject.getTracks();
+      tracks.foreach(track => track.stop())
+      videoElement.srcObeject = null;
+    }
+
+    function dumpOptionsInfo() {
+  const videoTrack = videoElem.srcObject.getVideoTracks()[0];
+
+  console.info("Track settings:");
+  console.info(JSON.stringify(videoTrack.getSettings(), null, 2));
+  console.info("Track constraints:");
+  console.info(JSON.stringify(videoTrack.getConstraints(), null, 2));
+}
+  </script>
+
+  <div class="container">
+    <div class="fb-box">
+      <div id="status">
+        <a href="javascript:void(0);" id="fblink" onclick="fbLogin();"><img src="fblogin-btn.jpg"/></a>
+        <div class="ac-data" id="userData">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
